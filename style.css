@@ -3,7 +3,9 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
     font-family: 'Poppins', sans-serif;
 }
 
@@ -12,6 +14,7 @@ body{
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    min-width: 100vw;
     background: #091921;
 }
 
@@ -21,15 +24,20 @@ body{
 }
 
 #result {
-    padding: 1rem 1rem;
+    display:flex;
+    flex-direction: column;
+    height: 20vh;
+    padding: 0 1rem;
     background: #fff;
     text-align: right;
 }
 
 #operation-history {
-    padding: 2rem 0 1rem 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
     font-size: 1rem;
-    height: 1rem;
+    flex: 1;
 }
 
 #history-value {
@@ -37,17 +45,17 @@ body{
 }
 
 #operation-result {
-    padding: 2rem 0 4rem 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
     font-size: 2.5rem;
-    height: 2.5rem;
+    flex: 1;
 }
 
 #keyboard {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-    height: 35rem;
-    width: 35rem;
+    grid-template-columns: repeat(4, 10vw);
+    grid-template-rows: repeat(5, 10vh);
 }
 
 .number, .operator {
@@ -55,7 +63,7 @@ body{
     height: 1fr;
     cursor: pointer;
     color: #fff;
-    background-color: #0c2835;
+    background-color: #061e29;
     border: 1px solid rgba(0,0,0,0.1);
     outline: 0;
 }
@@ -85,4 +93,100 @@ body{
 
 #\= {
     background-color: #546de5;
+}
+
+
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+
+    html {
+        font-size: 50%;
+    }
+
+    #result {
+        height: 25vh;
+    }
+
+
+    #keyboard {
+        grid-template-columns: repeat(4, 25vw);
+        grid-template-rows: repeat(5, 15vh);
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+
+    html {
+        font-size: 80%;
+    }
+
+    #result {
+        height: 25vh;
+    }
+
+
+    #keyboard {
+        grid-template-columns: repeat(4, 25vw);
+        grid-template-rows: repeat(5, 15vh);
+    }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    html {
+        font-size: 120%;
+    }
+
+    #result {
+        height: 25vh;
+    }
+
+    #operation-history{
+        padding: 0.5rem 0 1rem 0;
+    }
+
+    #operation-result {
+        padding: 0.5rem 0 0.5rem 0;
+    }
+
+    #keyboard {
+        grid-template-columns: repeat(4, 25vw);
+        grid-template-rows: repeat(5, 15vh);
+    }
+}
+
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    html {
+        font-size: 120%;
+    }
+
+    #result {
+        height: 20vh;
+    }
+
+
+    #keyboard {
+        grid-template-columns: repeat(4, 15vw);
+        grid-template-rows: repeat(5, 11vh);
+    }
+}
+
+/* 4K screen */
+@media only screen and (min-width: 3840px) {
+    html {
+        font-size: 170%;
+    }
+
+    #result {
+        height: 20vh;
+    }
+
+    #keyboard {
+        grid-template-columns: repeat(4, 15vw);
+        grid-template-rows: repeat(5, 11vh);
+    }
 }
