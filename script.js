@@ -31,6 +31,9 @@ function setResult(result) {
     }
 }
 
+// Tracks whether an expression has been completed
+var newExpression = true;
+
 /*
 Returns a string with comma separated values
 */
@@ -57,11 +60,13 @@ var operators = document.getElementsByClassName("operator");
 // Adds a click listener to each "number" element
 for (var i=0; i<operators.length; i++) {
     operators[i].addEventListener('click', function() {
+        newExpression = false;
         switch (this.id) {
             // If 'C' clear button is clicked
-            case "clear":   
+            case "clear":
+                newExpression = true;   
                 setHistory(""); // Clear the history
-                setResult(0);   // Set result to 0
+                setResult(0);   // Set result to 0 
                 break;
             // If backspace button is clicked
             case "backspace":
@@ -69,6 +74,7 @@ for (var i=0; i<operators.length; i++) {
                 if(result && result != 0) { // Check if result is a number other than 0 or empty
                     if(result.length == 1) {    // If the digit to delete is the last digit
                         setResult(0);   // Update the result to 0
+                        newExpression = true;
                     } else {
                         result = result.substr(0, result.length-1); // Remove the last character 
                         setResult(result);
@@ -97,6 +103,7 @@ for (var i=0; i<operators.length; i++) {
                         var result = eval(history); // Evaluate the expression in history
                         setResult(result);  // Update the result
                         setHistory(""); // Clear the history
+                        newExpression = true;
                     } 
                     // If mathematic operators are clicked: / * - +
                     else {
@@ -106,6 +113,7 @@ for (var i=0; i<operators.length; i++) {
                         setResult("");  // Clear the result
                     }
                 }
+                break;
 
         }
     });
@@ -118,12 +126,17 @@ var numbers = document.getElementsByClassName("number");
 for (var i=0; i<numbers.length; i++) {
     numbers[i].addEventListener('click', function() {
 
+        if (newExpression === true){
+            setResult("");    
+        }
+
         // Retrieve the number stored in result
         var result = reverseFormattedResult(getResult());
         
         if(result != NaN) {     // If result is a number    
             result += this.id;  // Append the clicked button to the result
             setResult(result);    // Update result
+            newExpression = false;
         }
     })
 }
