@@ -87,7 +87,6 @@ body{
 }
 
 #clear {
-    grid-column: span 2;
     background: #fc427b;
 }
 
@@ -101,8 +100,9 @@ body{
 @media only screen and (max-width: 600px) {
 
     html {
-        font-size: 50%;
+        font-size: 150%;
     }
+
 
     #result {
         height: 25vh;
@@ -143,13 +143,6 @@ body{
         height: 25vh;
     }
 
-    #operation-history{
-        padding: 0.5rem 0 1rem 0;
-    }
-
-    #operation-result {
-        padding: 0.5rem 0 0.5rem 0;
-    }
 
     #keyboard {
         grid-template-columns: repeat(4, 25vw);
