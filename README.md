@@ -1,8 +1,8 @@
-# [calculator](https://naughty-perlman-b6d6c9.netlify.app/)
+# [calculator](https://aliserajalam.github.io/calculator/)
 
 A calculator application built with vanilla HTML, CSS, and Javascript
 
-[Live](https://naughty-perlman-b6d6c9.netlify.app/)
+[Live](https://aliserajalam.github.io/calculator/)
 
 ### Learning objectives
 * HTML DOM content and style manipulation with JavaScript
