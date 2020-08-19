@@ -1,4 +1,15 @@
 
+// Array to hold operation expression
+let expressionBuilder = [];
+
+function expressionArrayToString(expressionArray) {
+    return expressionArray.join('');
+}
+
+function lastElementOfArray(array) {
+    return array[array.length -1];
+}
+
 /*
 Accessor method for calculator history DOM element
 */
@@ -31,9 +42,6 @@ function setResult(result) {
     }
 }
 
-// Tracks whether an expression has been completed
-var newExpression = true;
-
 /*
 Returns a string with comma separated values
 */
@@ -60,56 +68,69 @@ var operators = document.getElementsByClassName("operator");
 // Adds a click listener to each "number" element
 for (var i=0; i<operators.length; i++) {
     operators[i].addEventListener('click', function() {
-        newExpression = false;
         switch (this.id) {
             // If 'C' clear button is clicked
             case "clear":
-                newExpression = true;   
+                expressionBuilder.length = 0;   
                 setHistory(""); // Clear the history
-                setResult(0);   // Set result to 0 
+                setResult("");   // Set result to 0 
                 break;
             // If backspace button is clicked
             case "backspace":
-                var result = reverseFormattedResult(getResult()).toString();
-                if(result && result != 0) { // Check if result is a number other than 0 or empty
-                    if(result.length == 1) {    // If the digit to delete is the last digit
-                        setResult(0);   // Update the result to 0
-                        newExpression = true;
-                    } else {
-                        result = result.substr(0, result.length-1); // Remove the last character 
-                        setResult(result);
-                    }
-                } 
+                setResult("");
+                // Remove the last digit in the expressionBuilder array
+                expressionBuilder.pop();
+                setHistory(expressionArrayToString(expressionBuilder))
+
+                // var result = reverseFormattedResult(getResult()).toString();
+                // if(result && result != 0) { // Check if result is a number other than 0 or empty
+                //     if(result.length == 1) {    // If the digit to delete is the last digit
+                //         setResult(0);   // Update the result to 0
+                //         newExpression = true;
+                //     } else {
+                //         result = result.substr(0, result.length-1); // Remove the last character 
+                //         setResult(result);
+                //     }
+                // } 
                 break;
             // For the rest of operators: = / * - +
             default:      
-                var result = getResult();
+                var result = reverseFormattedResult(getResult());
                 var history = getHistory();
 
                 // If the last digit is an operator, replace the operator with the current clicked operator
-                if(result =="" && history != "") {
-                    if(isNaN(history[history.length-1])) {
-                        history = history.substr(0, history.length-1);
+                if(history != "") {
+                    if(isNaN(lastElementOfArray(expressionBuilder))) {
+                        expressionBuilder.pop(); // Remove the last entry
+                        setHistory(expressionArrayToString(expressionBuilder));
+                        history = getHistory();
                     }
                 }
 
                 
-                if(result != "" || history != ""){
-                    result = result=="" ? result : reverseFormattedResult(result);
-                    history = history + result;
+                if(history != ""){// if(result != "" || history != ""){
+                    //  result = result=="" ? result : reverseFormattedResult(result);
+                    //  history = history + result;
 
                     // If equals button is clicked
                     if(this.id == "=") {
-                        var result = eval(history); // Evaluate the expression in history
-                        setResult(result);  // Update the result
-                        setHistory(""); // Clear the history
-                        newExpression = true;
+                        if (isNaN(lastElementOfArray(expressionBuilder))) { // If last entry is not a number
+                             // Do nothing
+                        } else {
+                            var result = eval(expressionArrayToString(expressionBuilder)); // Evaluate the expression in history
+                            setResult(result);  // Update the result
+                        }
                     } 
                     // If mathematic operators are clicked: / * - +
                     else {
-                        // Add the operator to history
-                        history = history + this.id;    
-                        setHistory(history) 
+                        // Update the history to start with result value if newExpression is true
+                        if (result != "") {
+                            expressionBuilder.length = 0;   // Reset the expression builder
+                            expressionBuilder.push(result); // Add the result of previous operation
+                        }
+                        // Add the operator to expressionBuilder array
+                        expressionBuilder.push(this.id);
+                        setHistory(expressionArrayToString(expressionBuilder)) 
                         setResult("");  // Clear the result
                     }
                 }
@@ -126,17 +147,20 @@ var numbers = document.getElementsByClassName("number");
 for (var i=0; i<numbers.length; i++) {
     numbers[i].addEventListener('click', function() {
 
-        if (newExpression === true){
-            setResult("");    
+        var result = reverseFormattedResult(getResult());
+
+        if (result != ""){
+            expressionBuilder.length = 0; // Clear the expression builder
+            setHistory("");
         }
 
         // Retrieve the number stored in result
-        var result = reverseFormattedResult(getResult());
+        // var result = reverseFormattedResult(getResult());
         
-        if(result != NaN) {     // If result is a number    
-            result += this.id;  // Append the clicked button to the result
-            setResult(result);    // Update result
-            newExpression = false;
-        }
+        // if(result != NaN) {     // If result is a number 
+        expressionBuilder.push(this.id);   
+        // result += this.id;  // Append the clicked button to the result
+        setHistory(expressionArrayToString(expressionBuilder));    // Update result
+        
     })
 }
